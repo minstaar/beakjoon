@@ -20,6 +20,7 @@ int main()
         if(arr[1][i]) break;
         dp[1][i][0] = 1;
     }
+    
     for(int i=2; i<=n; i++){
         for(int j=1; j<=n; j++){
             if(arr[i][j]) continue;
