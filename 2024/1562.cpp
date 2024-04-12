@@ -9,25 +9,26 @@ int main()
 
     int n; cin>>n;
     vector<vector<vector<int>>> dp(n+1, vector<vector<int>>(10, vector<int>(1050, 0)));
-    for(int i=0; i<10; i++) dp[1][i][(1<<i)] = 1;
+    for(int i=1; i<10; i++) dp[1][i][(1<<i)] = 1;
     for(int i=2; i<=n; i++){
         for(int j=0; j<10; j++){
             for(int k=0; k<1024; k++){
                 if(j == 0){
-                    dp[i][j][k | (1<<j)] = dp[i-1][j+1][k];
+                    dp[i][j][k | (1<<j)] += dp[i-1][j+1][k];
                 }
                 if(j >= 1 && j <= 8){
-                    dp[i][j][k | (1<<j)] = (dp[i-1][j-1][k] + dp[i-1][j+1][k]) % MOD;
+                    dp[i][j][k | (1<<j)] += (dp[i-1][j-1][k] + dp[i-1][j+1][k]);
                 }
                 if(j == 9){
-                    dp[i][j][k | (1<<j)] = dp[i-1][j-1][k];
+                    dp[i][j][k | (1<<j)] += dp[i-1][j-1][k];
                 }
+                dp[i][j][k | (1<<j)] %= MOD;
             }
         }
     }
 
     int ans = 0;
-    for(int i=0; i<=9; i++){
+    for(int i=0; i<10; i++){
         ans = (ans + dp[n][i][1023]) % MOD;
     }
     cout<<ans;
