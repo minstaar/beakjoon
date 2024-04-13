@@ -8,44 +8,65 @@ struct Line
     double cross;
 };
 
+int n;
+int a, b, c;
+long long x[1000010], psum[1000010], dp[1000010];
+vector<Line> vec;
+
 double checkCross(Line& f, Line& g)
 {
     return (double)(g.q - f.q) / (f.p - g.p);
+}
+
+long long adjust(long long x)
+{
+    return a * x * x + b * x + c;
+}
+
+long long slope(int i)
+{
+    return -2 * a * psum[i];
+}
+
+long long inter(int i)
+{
+    return a * psum[i] * psum[i] - b * psum[i] + dp[i];
 }
 
 int main()
 {
     ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 
-    int n; cin >> n;
-    int a, b, c; cin >> a >> b >> c;
-    vector<int> x(n+1);
-    vector<long long> psum(n+1), dp(n+1);
+    cin >> n;
+    cin >> a >> b >> c;
     vector<Line> vec;
 
-    for(int i=0; i<n; i++){
+    for(int i=1; i<=n; i++){
         cin >> x[i];
-        psum[i] = i > 0 ? psum[i-1] + x[i] : x[i];
+        psum[i] = psum[i-1] + x[i];
     }
 
     long long xpos = 0;
-    vec.push_back({b, 0, 0.0});
-    for(int i=0; i<n; i++){
-        Line next = {(-2 * a + psum[i] + b), (dp[i] + a * psum[i] * psum[i] - b * psum[i]), 0.0};
+    dp[1] = adjust(psum[1]);
+    vec.push_back({slope(1), inter(1), 0.0});
 
+    for(int i=2; i<=n; i++){
+        long long x = psum[i];
+        while (xpos + 1 < vec.size() && vec[xpos+1].cross < x) xpos++;
+        dp[i] = max(adjust(psum[i]), vec[xpos].p * x + vec[xpos].q + adjust(psum[i]));
+
+        Line next = {slope(i), inter(i), 0.0};
         while(vec.size() >= 1){
-            next.cross = checkCross(next, vec.back());
-            if(next.cross < vec.back().cross) vec.pop_back();
+            double cross = checkCross(vec.back(), next);
+            if(cross <= vec.back().cross) vec.pop_back();
             else break;
         }
+        next.cross = checkCross(vec.back(), next);
         vec.push_back(next);
-
-        while(xpos + 1 < vec.size() && vec[xpos+1].cross < psum[i]) xpos++;
-        dp[i] = vec[xpos].p * psum[i] + vec[xpos].q + a * psum[i] * psum[i] + c;
-        cout<<xpos<<" "<<dp[i]<<endl;
+        if(xpos >= vec.size()) xpos = vec.size() - 1;
     }
 
-    cout << dp[n-1] << '\n';
+    cout << dp[n] << '\n';
 
     return 0;
 }
