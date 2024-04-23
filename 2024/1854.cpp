@@ -16,13 +16,13 @@ void dijkstra(int src)
     pq.push({0, src});
 
     while(!pq.empty()){
-        int cost = pq.top().first;
+        ll cost = pq.top().first;
         int cur = pq.top().second;
         pq.pop();
         
         for(auto x: adj[cur]){
             int next = x.first;
-            int nextDist = cost + x.second;
+            ll nextDist = cost + x.second;
             if(dist[next].size() < K){
                 dist[next].push(nextDist);
                 pq.push({nextDist, next});
