@@ -1,10 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <set>
 using namespace std;
 
-typedef pair<int, int> pii;
 struct Edge
 {
     int from;
@@ -15,24 +13,24 @@ struct Edge
     }
 };
 
-pii parent[1010];
+int parent[1010];
+bool gen[1010];
 
-pii Find(pii x)
+int Find(int x)
 {
-    if(parent[x.first].first == x.first) return parent[x.first];
+    if(parent[x] == x) return x;
     else{
-        if(x.second == 1) parent[x.first].second = 1;
-        return parent[x.first] = Find(parent[x.first]);
+        return parent[x] = Find(parent[x]);
     }
 }
 
-void Union(pii x, pii y)
+void Union(int x, int y)
 {
     x = Find(x);
     y = Find(y);
-    if(x.first == y.first) return;
-    if(x.first == 1) parent[y.first] = Find({x.first, 1});
-    else parent[x.first] = Find({y.first, (x.second + y.second)});
+    if(x == y) return;
+    if(gen[x] == true) parent[y] = x;
+    else parent[x] = y;
 }
 
 int main()
@@ -41,10 +39,10 @@ int main()
 
     int N, M, K; cin >> N >> M >> K;
     vector<Edge> adj;
-    for(int i=1; i<=N; i++) parent[i].first = i;
+    for(int i=1; i<=N; i++) parent[i] = i;
     for(int i=0; i<K; i++){
         int a; cin >> a;
-        parent[a].second = 1;
+        gen[a] = true;
     }
     for(int i=0; i<M; i++){
         int v1, v2, c; cin >> v1 >> v2 >> c;
@@ -54,10 +52,10 @@ int main()
     sort(adj.begin(), adj.end());
     long long ans = 0;
     for(auto cur: adj){
-        pii x = Find({cur.from, parent[cur.from].second});
-        pii y = Find({cur.to, parent[cur.to].second});
-        if(x.second == 1 && y.second == 1) continue;
-        if(x.first != y.first){
+        int x = Find(cur.from);
+        int y = Find(cur.to);
+        if(gen[x] == 1 && gen[y] == 1) continue;
+        if(x != y){
             Union(x, y);
             ans += cur.cost;
         }
