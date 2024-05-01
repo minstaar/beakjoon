@@ -1,11 +1,12 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <cstring>
 using namespace std;
 
-int W[10010], dp[10010][2], path[10010];
-bool visited[10010];
-vector<int> tree[10010];
+int W[10010], dp[10010][2];
+bool visited[10010], subset[10010];
+vector<int> tree[10010], ans;
 
 void dfs(int cur)
 {
@@ -15,7 +16,26 @@ void dfs(int cur)
             visited[next] = true;
             dfs(next);
             dp[cur][0] += max(dp[next][0], dp[next][1]);
+            if(dp[next][0] <= dp[next][1]) subset[next] = true;
             dp[cur][1] += dp[next][0];
+        }
+    }
+}
+
+void path(int cur, bool flag)
+{
+    visited[cur] = true;
+    if(flag){
+        ans.push_back(cur);
+        for(auto next: tree[cur]){
+            if(visited[next]) continue;
+            path(next, 0);
+        }
+    }
+    else{
+        for(auto next: tree[cur]){
+            if(visited[next]) continue;
+            path(next, subset[next]);
         }
     }
 }
@@ -36,6 +56,10 @@ int main()
     dfs(1);
 
     cout << max(dp[1][0], dp[1][1]) << '\n';
+    memset(visited, false, sizeof(visited));
+    path(1, dp[1][0] <= dp[1][1] ? true : false);
+    sort(ans.begin(), ans.end());
+    for(auto x: ans) cout << x << " ";
 
     return 0;
 }
