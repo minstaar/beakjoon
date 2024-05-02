@@ -27,7 +27,18 @@ int query(int u, int v)
         if(diff % 2) u = parent[u][i];
         diff /= 2;
     }
-    
+
+    if(u != v){
+        for(int i=17; i>=0; i--){
+            if(parent[u][i] != -1 && parent[u][i] != parent[v][i]){
+                u = parent[u][i];
+                v = parent[v][i];
+            }
+        }
+        u = parent[u][0];
+    }
+
+    return u;
 }
 
 int main()
@@ -45,7 +56,7 @@ int main()
     memset(parent, -1, sizeof(parent));
     depth[1] = 0;
     makeTree(1);
-    for(int k=0; k<=17; k++){
+    for(int k=0; k<=16; k++){
         for(int i=2; i<=N; i++){
             if(parent[i][k] != -1){
                 parent[i][k+1] = parent[parent[i][k]][k];
