@@ -21,6 +21,7 @@ int main()
             table[j][i] = table[tmp][i-1];
         }
     }
+    
     int Q; cin >> Q;
     while(Q--){
         int n, x; cin >> n >> x;
