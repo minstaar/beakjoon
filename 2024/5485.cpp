@@ -12,7 +12,7 @@ int main()
     for(int i=1; i<=N; i++) cin >> arr[i];
     
     int left = 2 * arr[1] - arr[2];
-    int right = arr[1];
+    int rdight = arr[1];
     int tmp = left;
     for(int i=3; i<=N; i++){
         if(i % 2){
