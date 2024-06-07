@@ -10,17 +10,17 @@ bool flag;
 int dfs(int prev, int cur)
 {
     dfn[cur] = ++id;
-    int cycle = 0, f = 0;
+    int cycle = 0, close = 0;
     for(auto next: adj[cur]){
         if(next == prev) continue;
         if(dfn[next] == 0){
             cycle += dfs(cur, next);
         }
         else if(dfn[cur] > dfn[next]) cycle++;
-        else if(dfn[cur] < dfn[next]) f++;
+        else if(dfn[cur] < dfn[next]) close++;
     }
     if(cycle >= 2) flag = true;
-    return cycle - f;
+    return cycle - close;
 }
 
 int main()
