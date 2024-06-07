@@ -48,6 +48,7 @@ int main()
                 cnt++;
             }
         }
+        
         if(flag && cnt == K){
             cout << V[i] << '\n';
             break;
