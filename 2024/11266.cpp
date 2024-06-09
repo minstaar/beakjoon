@@ -6,18 +6,17 @@ using namespace std;
 vector<int> adj[10010], ans;
 int dfn[10010], id;
 
-int dfs(int prev, int cur, bool isRoot)
+int dfs(int cur, bool isRoot)
 {
     int ret = dfn[cur] = ++id;
     int child = 0;
     for(auto next: adj[cur]){
-        if(next == prev) continue;
         if(dfn[next] > 0){
             ret = min(ret, dfn[next]);
         }
         else{
             child++;
-            int low = dfs(cur, next, false);
+            int low = dfs(next, false);
             if(!isRoot && low >= dfn[cur]){
                 ans.push_back(cur);
             }
@@ -42,7 +41,7 @@ int main()
     }
 
     for(int i=1; i<=V; i++){
-        if(dfn[i] == 0) dfs(0, i, true);
+        if(dfn[i] == 0) dfs(i, true);
     }
     
     sort(ans.begin(), ans.end());
