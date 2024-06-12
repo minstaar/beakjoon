@@ -32,6 +32,7 @@ struct BCC{
 
     void init(int _n){
         n = _n;
+        id = 0;
         adj.clear();
         adj.resize(n+1);
         dfn.clear();
