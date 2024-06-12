@@ -13,15 +13,10 @@ struct BCC{
     void init(int _n){
         n = _n;
         id = art_point = color_cnt = 0;
-        adj.clear();
         adj.resize(n+1);
-        dfn.clear();
         dfn.resize(n+1);
-        low.clear();
         low.resize(n+1);
-        check.clear();
         check.resize(n+1);
-        visited.clear();
         visited.resize(n+1);
     }
 
@@ -64,7 +59,6 @@ struct BCC{
         for(int i=1; i<=n; i++){
             if(!dfn[i]) dfs(-1, i);
         }
-        bcc.clear();
         bcc.resize(n+1);
         for(int i=1; i<=n; i++){
             if(!visited[i]) color(i, 0);
