@@ -19,7 +19,6 @@ struct LCA{
 
     void init(int _n){
         n = _n;
-        adj.clear();
         adj.resize(n+1);
         for(; (1<<log)<=n; log++);
         log++;
