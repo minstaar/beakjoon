@@ -73,7 +73,7 @@ struct LCA{
             diff /= 2;
         }
         if(u != v){
-            for(int i = log-1; i>=0; i--){
+            for(int i=log-1; i>=0; i--){
                 if(parent[u][i] != -1 && parent[u][i] != parent[v][i]){
                     cost.min = min({cost.min, dist[u][i].min, dist[v][i].min});
                     cost.max = max({cost.max, dist[u][i].max, dist[v][i].max});
