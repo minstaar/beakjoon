@@ -43,6 +43,7 @@ struct LCA{
     }
 
     void setParent(){
+        depth[1] = 0;
         dfs(1);
         for(int i=0; i<=log-2; i++){
             for(int j=2; j<=n; j++){
@@ -87,3 +88,24 @@ struct LCA{
         return u;
     }
 }lca;
+
+int main()
+{
+    ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+
+    int N; cin >> N;
+    lca.init(N);
+    for(int i=1; i<=N-1; i++){
+        int u, v; cin >> u >> v;
+        lca.addEdge(u, v, 1);
+    }
+    lca.setParent();
+    int Q; cin >> Q;
+    while(Q--){
+        int u, v; cin >> u >> v;
+        Data cost;
+        cout << lca.get_lca(u, v, cost) << '\n';
+    }
+
+    return 0;
+}
