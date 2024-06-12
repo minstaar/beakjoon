@@ -12,11 +12,11 @@ struct UnionFind{
         return parent[x] < 0 ? x : parent[x] = Find(parent[x]);
     }
 
-    void Union(int x, int y){
+    bool Union(int x, int y){
         x = Find(x), y = Find(y);
-        if(x != y){
-            parent[x] += parent[y];
-            parent[y] = x;
-        }
+        if(x == y) return false;
+        parent[x] += parent[y];
+        parent[y] = x;
+        return true;
     }
 }UF;
