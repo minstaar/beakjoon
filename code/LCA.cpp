@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+typedef pair<int, int> pii;
+typedef long long ll;
 const int INF = 1e9;
 struct Data{
     int min = INF;
@@ -9,7 +11,7 @@ struct Data{
 };
 
 struct LCA{
-    vector<vector<pair<int, int>>> adj;
+    vector<vector<pii>> adj;
     vector<vector<int>> parent;
     vector<int> depth;
     vector<vector<Data>> dist;
@@ -43,6 +45,7 @@ struct LCA{
     }
 
     void setParent(){
+        depth[1] = 0;
         dfs(1);
         for(int i=0; i<=log-2; i++){
             for(int j=2; j<=n; j++){
