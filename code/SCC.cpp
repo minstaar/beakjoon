@@ -5,7 +5,6 @@ struct strongly_connected{
     vector<vector<int>> adj;
     
     void init(int n){
-        adj.clear();
         adj.resize(n+1);
     }
     
