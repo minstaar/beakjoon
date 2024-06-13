@@ -3,17 +3,16 @@ using namespace std;
 typedef pair<int, int> pii;
 
 struct BCC{
+    vector<vector<pii>> adj;
     vector<int> dfn, low, check;
     vector<bool> visited;
-    vector<vector<pii>> adj;
     vector<tuple<int, int, int>> edge;
     vector<vector<int>> bcc;
     int n, id, art_point, color_cnt;
 
     void init(int _n){
         n = _n;
-        adj.clear();
-        adj.resize(n+1);
+        adj = vector<vector<pii>>(n+1);
     }
 
     void addEdge(int u, int v, int idx){
@@ -60,8 +59,7 @@ struct BCC{
         for(int i=1; i<=n; i++){
             if(!dfn[i]) dfs(-1, i);
         }
-        bcc.clear();
-        bcc.resize(n+1);
+        bcc = vector<vector<int>>(n+1);
         for(int i=1; i<=n; i++){
             if(!visited[i]) color(i, 0);
         }

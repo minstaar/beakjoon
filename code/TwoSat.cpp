@@ -3,19 +3,18 @@ using namespace std;
 
 struct strongly_connected{
     vector<vector<int>> adj;
+    vector<int> dfn, sccId;
+    int pv, scc_cnt;
+    stack<int> st;
     
     void init(int n){
-        adj.clear();
-        adj.resize(n+1);
+        adj = vector<vector<int>>(n+1);
     }
     
     void addEdge(int u, int v){
         adj[u].push_back(v);
     }
     
-    vector<int> dfn, sccId;
-    int pv, scc_cnt;
-    stack<int> st;
     int dfs(int cur){
         int ret = dfn[cur] = ++pv;
         st.push(cur);
@@ -50,8 +49,8 @@ struct twosat{
     vector<int> res;
 
     void init(int _n){
-        scc.init(_n*2+1);
         n = _n;
+        scc.init(n*2+1);
     }
     
     int Not(int x) {return x > n ? x - n : x + n;}

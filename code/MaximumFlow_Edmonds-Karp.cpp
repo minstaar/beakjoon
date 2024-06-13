@@ -20,7 +20,7 @@ struct MaximumFlow{
 
     void init(int _n){
         n = _n;
-        adj.resize(n+1);
+        adj = vector<vector<Edge*>>(n+1);
     }
 
     void addEdge(int u, int v, int w){
@@ -36,10 +36,8 @@ struct MaximumFlow{
         vector<int> prev;
         vector<Edge*> path;    
         while(1){
-            prev.clear();
-            prev.resize(n+1, -1);
-            path.clear();
-            path.resize(n+1);
+            prev = vector<int>(n+1, -1);
+            path = vector<Edge*>(n+1);
             queue<int> que;
             que.push(S);
             while(!que.empty() && prev[E] == -1){

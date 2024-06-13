@@ -2,20 +2,19 @@
 using namespace std;
 
 struct strongly_connected{
-    vector<vector<int>> adj;
+    vector<vector<int>> adj, dag;
+    vector<int> dfn, sccId;
+    int pv, scc_cnt;
+    stack<int> st;
     
     void init(int n){
-        adj.clear();
-        adj.resize(n+1);
+        adj = vector<vector<int>>(n+1);
     }
     
     void addEdge(int u, int v){
         adj[u].push_back(v);
     }
     
-    vector<int> dfn, sccId;
-    int pv, scc_cnt;
-    stack<int> st;
     int dfs(int cur){
         int ret = dfn[cur] = ++pv;
         st.push(cur);
@@ -34,7 +33,6 @@ struct strongly_connected{
         return ret;
     }
 
-    vector<vector<int>> dag;
     void get_scc(int n){
         dfn = vector<int>(n+1, -1);
         sccId = vector<int>(n+1, -1);
@@ -42,12 +40,11 @@ struct strongly_connected{
         for(int i=1; i<=n; i++){
             if(dfn[i] == -1) dfs(i);
         }
-        dag.clear();
-        dag.resize(scc_cnt);
+        dag = vector<vector<int>>(scc_cnt);
         for(int i=1; i<=n; i++){
             for(auto next: adj[i]){
                 if(sccId[i] != sccId[next]){
-                    dag[i].push_back(next);
+                    dag[sccId[i]].push_back(sccId[next]);
                 }
             }
         }

@@ -7,7 +7,7 @@ const int INF = 1e9;
 struct Data{
     int min = INF;
     int max = -INF;
-    long long sum = 0;
+    ll sum = 0;
 };
 
 struct LCA{
@@ -19,15 +19,11 @@ struct LCA{
 
     void init(int _n){
         n = _n;
-        adj.clear();
-        adj.resize(n+1);
+        adj = vector<vector<pii>>(n+1);
         for(; (1<<log)<=n; log++);
         log++;
-        parent.clear();
-        parent.resize(n+1, vector<int>(log, -1));
-        dist.clear();
-        dist.resize(n+1, vector<Data>(log));
-        depth.clear();
+        parent = vector<vector<int>>(n+1, vector<int>(log, -1));
+        dist = vector<vector<Data>>(n+1, vector<Data>(log));
         depth = vector<int>(n+1, -1);
     }
 

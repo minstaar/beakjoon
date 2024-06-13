@@ -33,8 +33,7 @@ struct BCC{
     void init(int _n){
         n = _n;
         id = 0;
-        adj.clear();
-        adj.resize(n+1);
+        adj = vector<vector<pii>>(n+1);
         UF.init(n);
     }
 
@@ -63,8 +62,7 @@ struct BCC{
         for(int i=1; i<=n; i++){
             if(!dfn[i]) dfs(-1, i);
         }
-        bcc.clear();
-        bcc.resize(n+1);
+        bcc = vector<vector<int>>(n+1);
         for(auto [u, v, idx]: edge){
             u = UF.Find(u);
             v = UF.Find(v);
