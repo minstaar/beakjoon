@@ -12,12 +12,8 @@ struct BCC{
 
     void init(int _n){
         n = _n;
-        id = art_point = color_cnt = 0;
+        adj.clear();
         adj.resize(n+1);
-        dfn.resize(n+1);
-        low.resize(n+1);
-        check.resize(n+1);
-        visited.resize(n+1);
     }
 
     void addEdge(int u, int v, int idx){
@@ -56,9 +52,15 @@ struct BCC{
     }
 
     void get_bcc(){
+        dfn = vector<int>(n+1);
+        low = vector<int>(n+1);
+        check = vector<int>(n+1);
+        visited = vector<bool>(n+1);
+        id = art_point = color_cnt = 0;
         for(int i=1; i<=n; i++){
             if(!dfn[i]) dfs(-1, i);
         }
+        bcc.clear();
         bcc.resize(n+1);
         for(int i=1; i<=n; i++){
             if(!visited[i]) color(i, 0);

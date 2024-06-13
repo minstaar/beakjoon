@@ -19,11 +19,15 @@ struct LCA{
 
     void init(int _n){
         n = _n;
+        adj.clear();
         adj.resize(n+1);
         for(; (1<<log)<=n; log++);
         log++;
+        parent.clear();
         parent.resize(n+1, vector<int>(log, -1));
+        dist.clear();
         dist.resize(n+1, vector<Data>(log));
+        depth.clear();
         depth = vector<int>(n+1, -1);
     }
 

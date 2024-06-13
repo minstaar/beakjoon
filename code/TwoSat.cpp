@@ -5,6 +5,7 @@ struct strongly_connected{
     vector<vector<int>> adj;
     
     void init(int n){
+        adj.clear();
         adj.resize(n+1);
     }
     
@@ -64,6 +65,7 @@ struct twosat{
 
     bool satisfy(){
         scc.get_scc(n*2);
+        res.clear();
         res.resize(n+1);
         for(int i=1; i<=n; i++){
             if(scc.sccId[i] == scc.sccId[Not(i)]){

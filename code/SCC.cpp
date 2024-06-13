@@ -5,6 +5,7 @@ struct strongly_connected{
     vector<vector<int>> adj;
     
     void init(int n){
+        adj.clear();
         adj.resize(n+1);
     }
     
@@ -41,6 +42,7 @@ struct strongly_connected{
         for(int i=1; i<=n; i++){
             if(dfn[i] == -1) dfs(i);
         }
+        dag.clear();
         dag.resize(scc_cnt);
         for(int i=1; i<=n; i++){
             for(auto next: adj[i]){
