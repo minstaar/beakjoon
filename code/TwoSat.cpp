@@ -2,7 +2,7 @@
 using namespace std;
 
 struct strongly_connected{
-    vector<vector<int>> adj;
+    vector<vector<int>> adj, dag;
     vector<int> dfn, sccId;
     int pv, scc_cnt;
     stack<int> st;
@@ -39,6 +39,14 @@ struct strongly_connected{
         pv = scc_cnt = 0;
         for(int i=1; i<=n; i++){
             if(dfn[i] == -1) dfs(i);
+        }
+        dag = vector<vector<int>>(scc_cnt);
+        for(int i=1; i<=n; i++){
+            for(auto next: adj[i]){
+                if(sccId[i] != sccId[next]){
+                    dag[sccId[i]].push_back(sccId[next]);
+                }
+            }
         }
     }
 }scc;
