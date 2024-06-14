@@ -15,11 +15,11 @@ struct MaximumFlow{
         }
     };
 
-    int n;
+    int n, S, T;
     vector<vector<Edge*>> adj;
 
-    void init(int _n){
-        n = _n;
+    void init(int _n, int _S, int _T){
+        n = _n, S = _S, T = _T;
         adj = vector<vector<Edge*>>(n+1);
     }
 
@@ -31,7 +31,7 @@ struct MaximumFlow{
         adj[v].push_back(e2);
     }
 
-    int get_maxflow(int S, int E){
+    int get_maxflow(){
         int total = 0;
         vector<int> prev;
         vector<Edge*> path;    
@@ -40,7 +40,7 @@ struct MaximumFlow{
             path = vector<Edge*>(n+1);
             queue<int> que;
             que.push(S);
-            while(!que.empty() && prev[E] == -1){
+            while(!que.empty() && prev[T] == -1){
                 int cur = que.front();
                 que.pop();
                 for(Edge *e: adj[cur]){
@@ -49,16 +49,16 @@ struct MaximumFlow{
                         que.push(next);
                         prev[next] = cur;
                         path[next] = e;
-                        if(next == E) break;
+                        if(next == T) break;
                     }
                 }
             }
-            if(prev[E] == -1) break;
+            if(prev[T] == -1) break;
             int flow = 1e9;
-            for(int i=E; i!=S; i=prev[i]){
+            for(int i=T; i!=S; i=prev[i]){
                 flow = min(flow, path[i]->spare());
             }
-            for(int i=E; i!=S; i=prev[i]){
+            for(int i=T; i!=S; i=prev[i]){
                 path[i]->addFlow(flow);
             }
             total += flow;

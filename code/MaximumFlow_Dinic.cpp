@@ -3,12 +3,12 @@ using namespace std;
 
 struct Dinic{
     const int INF = 1e9;
-    int n;
+    int n, S, T;
     vector<int> level, work;
     vector<vector<int>> adj, c, f;
 
-    void init(int _n){
-        n = _n;
+    void init(int _n, int _S, int _T){
+        n = _n, S = _S, T = _T;
         adj = vector<vector<int>>(n+1);
         c = vector<vector<int>>(n+1, vector<int>(n+1));
         f = vector<vector<int>> (n+1, vector<int>(n+1));
@@ -20,7 +20,7 @@ struct Dinic{
         c[u][v] = w;
     }
 
-    bool bfs(int S, int T){
+    bool bfs(){
         level = vector<int>(n+1, -1);
         level[S] = 0;
         queue<int> que;
@@ -54,9 +54,9 @@ struct Dinic{
         return 0;
     }
 
-    int get_maxflow(int S, int T){
+    int get_maxflow(){
         int total = 0;
-        while(bfs(S, T)){
+        while(bfs()){
             work = vector<int>(n+1);
             while(1){
                 int flow = dfs(S, T, INF);
