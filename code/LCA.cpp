@@ -58,34 +58,48 @@ struct LCA{
         }
     }
 
-    int get_lca(int u, int v, Data& cost){
-        cost = {INF, -INF, 0};
+    int get_lca(int u, int v){
         if(depth[u] < depth[v]) swap(u, v);
         int diff = depth[u] - depth[v];
         for(int i=0; diff; i++){
-            if(diff % 2){
-                cost.min = min(cost.min, dist[u][i].min);
-                cost.max = max(cost.max, dist[u][i].max);
-                cost.sum += dist[u][i].sum;
-                u = parent[u][i];
-            }
+            if(diff % 2) u = parent[u][i];
             diff /= 2;
         }
         if(u != v){
             for(int i=log-1; i>=0; i--){
                 if(parent[u][i] != -1 && parent[u][i] != parent[v][i]){
-                    cost.min = min({cost.min, dist[u][i].min, dist[v][i].min});
-                    cost.max = max({cost.max, dist[u][i].max, dist[v][i].max});
-                    cost.sum = dist[u][i].sum + dist[v][i].sum;
                     u = parent[u][i];
                     v = parent[v][i];
                 }
             }
-            cost.min = min({cost.min, dist[u][0].min, dist[v][0].min});
-            cost.max = max({cost.max, dist[u][0].max, dist[v][0].max});
-            cost.sum = dist[u][0].sum + dist[v][0].sum;
             u = parent[u][0];
         }
         return u;
+    }
+
+    Data get_dist(int u, int v){
+        Data res;
+        int a = get_lca(u, v);
+        int diff = depth[u] - depth[a];
+        for(int i=0; diff; i++){
+            if(diff % 2){
+                res.sum += dist[u][i].sum;
+                res.min = min(res.min, dist[u][i].min);
+                res.max = max(res.max, dist[u][i].max);
+                u = parent[u][i];
+            }
+            diff /= 2;
+        }
+        diff = depth[v] - depth[a];
+        for(int i=0; diff; i++){
+            if(diff % 2){
+                res.sum += dist[u][i].sum;
+                res.min = min(res.min, dist[u][i].min);
+                res.max = max(res.max, dist[u][i].max);
+                u = parent[u][i];
+            }
+            diff /= 2;
+        }
+        return res;
     }
 }lca;
