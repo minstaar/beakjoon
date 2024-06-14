@@ -69,7 +69,7 @@ template<class flow_t> struct HLPP{
 	void discharge(int v){
 		int h = n*2, k = hei[v];
 		
-        for(int j = 0; j < G[v].size(); j++){
+        for(int j=0; j<G[v].size(); j++){
 			auto& e = G[v][arc[v]];
 			if(e.rem){
 				if(k == hei[e.to]+1){
