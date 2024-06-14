@@ -154,7 +154,7 @@ int main()
             }
         }
         for(int i=1; i<=N; i++){
-            if(arr[i] == -1) arr[i] = (scc[i+N] < scc[i]);
+            if(arr[i] == -1) arr[i] = (sccId[i+N] < sccId[i]);
         }
         */
         cout << "TRUE" << '\n';
