@@ -16,7 +16,7 @@ struct Dinic{
     }
 
     void addEdge(int u, int v, int w, bool directed = 1){
-        Edge e1 = {v, adj[v].size(), u}, e2 = {u, adj[u].size(), (directed ? 0 : w)};
+        Edge e1 = {v, adj[v].size(), w}, e2 = {u, adj[u].size(), (directed ? 0 : w)};
         adj[u].push_back(e1);
         adj[v].push_back(e2);
     }
@@ -42,7 +42,7 @@ struct Dinic{
     int dfs(int cur, int flow){
         if(cur == T) return flow;
         for(int &i=work[cur]; i<adj[cur].size(); i++){
-            auto [next, dual, spare] = adj[cur][i];
+            auto &[next, dual, spare] = adj[cur][i];
             if(level[next] == level[cur] + 1 && spare > 0){
                 int df = dfs(next, min(spare, flow));
                 if(df > 0){
