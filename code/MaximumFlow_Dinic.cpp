@@ -67,4 +67,12 @@ struct Dinic{
         }
         return total;
     }
+
+    int getflow(int v, int e){
+        return adj[v][e].spare;
+    }
+
+    bool cutSide(int v){
+        return level[v] != -1;
+    }
 }nf;
