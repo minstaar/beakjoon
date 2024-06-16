@@ -75,4 +75,52 @@ struct Dinic{
     bool cutSide(int v){
         return level[v] != -1;
     }
-}nf;
+};
+
+int main()
+{
+    ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+
+    int T; cin >> T;
+    while(T--){
+        int N, M; cin >> N >> M;
+        Dinic nf(N * M + 2);
+        vector<vector<int>> arr(N+1, vector<int>(M+1));
+        int S = 0; nf.setS(S);
+        int T = N * M + 1; nf.setT(T);
+        int pv = 1, sum = 0;
+        for(int i=1; i<=N; i++){
+            for(int j=1; j<=M; j++){
+                cin >> arr[i][j];
+                if((i + j) % 2){
+                    nf.addEdge(S, pv, arr[i][j]);
+                }
+                else{
+                    nf.addEdge(pv, T, arr[i][j]);
+                }
+                sum += arr[i][j];
+                pv++;
+            }
+        }
+        pv = 1;
+        for(int i=1; i<=N; i++){
+            for(int j=1; j<=M; j++){
+                if((i + j) % 2){
+                    int dy[4] = {-1, 1, 0, 0};
+                    int dx[4] = {0, 0, -1, 1};
+                    int dp[4] = {-M, M, -1, 1};
+                    for(int k=0; k<4; k++){
+                        int ny = i + dy[k];
+                        int nx = j + dx[k];
+                        if(ny < 1 || ny > N || nx < 1 || nx > M) continue;
+                        nf.addEdge(pv, pv + dp[k], 1e9);
+                    }
+                }
+                pv++;
+            }
+        }
+        cout << sum - nf.get_maxflow() << '\n';
+    }
+
+    return 0;
+}
