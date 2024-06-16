@@ -1,80 +1,131 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct Dinic{
-    struct Edge{
-        int next, dual, spare;
-    };
-    const int INF = 1e9;
-    int n, S, T;
-    vector<int> level, work;
-    vector<vector<Edge>> adj;
-
-    Dinic(int _n): n(_n), adj(n+1) {}
-    
-    void setS(int _S) {S = _S;}
-    void setT(int _T) {T = _T;}
-
-    void addEdge(int u, int v, int w, bool directed = 1){
-        Edge e1 = {v, adj[v].size(), w}, e2 = {u, adj[u].size(), (directed ? 0 : w)};
-        adj[u].push_back(e1);
-        adj[v].push_back(e2);
-    }
-
-    bool bfs(){
-        level = vector<int>(n+1, -1);
-        level[S] = 0;
-        queue<int> que;
-        que.push(S);
-        while(!que.empty()){
-            int cur = que.front();
-            que.pop();
-            for(auto [next, dual, spare]: adj[cur]){
-                if(level[next] == -1 && spare > 0){
-                    level[next] = level[cur] + 1;
-                    que.push(next);
+template<class flow_t> struct HLPP{
+	struct Edge{
+		int to, inv;
+		flow_t rem, cap;
+	};
+ 
+	vector<vector<Edge>> G; // Don't use basic_string here, it will fuck up your entire life
+	vector<flow_t> excess;
+	vector<int> hei, arc, prv, nxt, act, bot;
+	queue<int> Q;
+	int n, high, cut, work;
+ 
+	// Initialize for n vertices
+	HLPP(int k): G(k) {}
+ 
+	int addEdge(int u, int v, flow_t cap, flow_t rcap = 0){
+		G[u].push_back({v, (int)G[v].size(), cap, cap});
+		G[v].push_back({u, (int)G[u].size() - 1, rcap, rcap});
+		return (int)G[u].size() - 1;
+	}
+ 
+	void raise(int v, int h){
+		prv[nxt[prv[v]] = nxt[v]] = prv[v];
+		hei[v] = h;
+		if(excess[v] > 0){
+			bot[v] = act[h]; act[h] = v;
+			high = max(high, h);
+		}
+		if(h < n) cut = max(cut, h+1);
+		nxt[v] = nxt[prv[v] = h += n];
+		prv[nxt[nxt[h] = v]] = v;
+	}
+ 
+	void global(int s, int t){
+		hei.assign(n, n*2);
+		act.assign(n*2, -1);
+		iota(prv.begin(), prv.end(), 0);
+		iota(nxt.begin(), nxt.end(), 0);
+		hei[t] = high = cut = work = 0;
+		hei[s] = n;
+		for(int x: {t, s}){
+			for(Q.push(x); !Q.empty(); Q.pop()){
+				int v = Q.front();
+				for(auto &e: G[v]){
+					if(hei[e.to] == n * 2 && G[e.to][e.inv].rem){
+						Q.push(e.to);
+                        raise(e.to, hei[v] + 1);
+                    }
+				}
+			}
+        }
+	}
+ 
+	void push(int v, Edge& e, bool z){
+		auto f = min(excess[v], e.rem);
+		if(f > 0){
+			if(z && !excess[e.to]){
+				bot[e.to] = act[hei[e.to]];
+				act[hei[e.to]] = e.to;
+			}
+			e.rem -= f; G[e.to][e.inv].rem += f;
+			excess[v] -= f; excess[e.to] += f;
+		}
+	}
+ 
+	void discharge(int v){
+		int h = n*2, k = hei[v];
+		
+        for(int j=0; j<G[v].size(); j++){
+			auto& e = G[v][arc[v]];
+			if(e.rem){
+				if(k == hei[e.to]+1){
+					push(v, e, 1);
+					if(excess[v] <= 0) return;
+				}
+                else h = min(h, hei[e.to] + 1);
+			}
+			if (++arc[v] >= G[v].size()) arc[v] = 0;
+		}
+ 
+		if(k < n && nxt[k+n] == prv[k+n]){
+			for(int j=k; j<cut; j++){
+			    while(nxt[j+n] < n){
+				    raise(nxt[j+n], n);
                 }
-            }
+			}
+			cut = k;
+		}
+        else raise(v, h), work++;
+	}
+ 
+	// Compute maximum flow from src to dst
+	flow_t flow(int src, int dst){
+		excess.assign(n = G.size(), 0);
+		arc.assign(n, 0);
+		prv.assign(n*3, 0);
+		nxt.assign(n*3, 0);
+		bot.assign(n, 0);
+		for(auto &e : G[src]){
+			excess[src] = e.rem;
+            push(src, e, 0);
+		}
+ 
+		global(src, dst);
+ 
+		for(; high; high--){
+			while(act[high] != -1){
+				int v = act[high];
+				act[high] = bot[v];
+				if(v != src && hei[v] == high){
+					discharge(v);
+					if(work > 4*n) global(src, dst);
+				}
+			}
         }
-        return level[T] != -1;
-    }
-
-    int dfs(int cur, int flow){
-        if(cur == T) return flow;
-        for(int &i=work[cur]; i<adj[cur].size(); i++){
-            auto &[next, dual, spare] = adj[cur][i];
-            if(level[next] == level[cur] + 1 && spare > 0){
-                int df = dfs(next, min(spare, flow));
-                if(df > 0){
-                    spare -= df;
-                    adj[next][dual].spare += df;
-                    return df;
-                }
-            }
-        }
-        return 0;
-    }
-
-    int get_maxflow(){
-        int total = 0;
-        while(bfs()){
-            work = vector<int>(n+1);
-            while(1){
-                int flow = dfs(S, INF);
-                if(flow == 0) break;
-                total += flow;
-            }
-        }
-        return total;
-    }
-
-    int getflow(int v, int e){
-        return adj[v][e].spare;
-    }
-
-    bool cutSide(int v){
-        return level[v] != -1;
-    }
+		return excess[dst];
+	}
+ 
+	// Get flow through e-th edge of vertex v
+	flow_t getFlow(int v, int e){
+		return G[v][e].cap - G[v][e].rem;
+	}
+ 
+	// Get if v belongs to cut component with src
+	bool cutSide(int v) {return hei[v] >= n;}
 };
 
 int main()
@@ -84,10 +135,9 @@ int main()
     int T; cin >> T;
     while(T--){
         int N, M; cin >> N >> M;
-        Dinic nf(N * M + 2);
+        HLPP<int> nf(N * M + 2);
         vector<vector<int>> arr(N+1, vector<int>(M+1));
-        int S = 0; nf.setS(S);
-        int T = N * M + 1; nf.setT(T);
+        int S = 0, T = N * M + 1;
         int pv = 1, sum = 0;
         for(int i=1; i<=N; i++){
             for(int j=1; j<=M; j++){
@@ -119,7 +169,7 @@ int main()
                 pv++;
             }
         }
-        cout << sum - nf.get_maxflow() << '\n';
+        cout << sum - nf.flow(S, T) << '\n';
     }
 
     return 0;
