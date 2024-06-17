@@ -1,15 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-struct SegmentTree{
-    vector<int> arr, tree, lazy;
+
+template<typename node_t> struct SegmentTree{
+    vector<int> arr;
+    vector<node_t> tree, lazy;
     
     void Init(int n){
         arr = vector<int>(n);
-        tree = lazy = vector<int>(1<<((int)ceil(log2(n))+1));
+        tree = lazy = vector<node_t>(1<<((int)ceil(log2(n))+1));
     }
 
-    int Merge(int l, int r){
+    node_t Merge(node_t l, node_t r){
         return l + r;
     }
 
@@ -33,7 +34,7 @@ struct SegmentTree{
         lazy[node] = 0;
     }
 
-    void update_range(int node, int s, int e, int l, int r, int val){
+    void update_range(int node, int s, int e, int l, int r, node_t val){
         propagate(node, s, e);
         if(l > e || r < s) return;
         if(l <= s && e <= r){
@@ -46,11 +47,11 @@ struct SegmentTree{
         tree[node] = Merge(tree[node*2], tree[node*2+1]);
     }
 
-    int query(int node, int s, int e, int l, int r){
+    node_t query(int node, int s, int e, int l, int r){
         propagate(node, s, e);
         if(l > e || r < s) return 0;
         if(l <= s && e <= r) return tree[node];
         int m = s + e >> 1;
         return Merge(query(node * 2, s, m, l, r), query(node * 2 + 1, m + 1, e, l, r));
     }
-}Seg;
+};

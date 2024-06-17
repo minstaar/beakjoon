@@ -1,27 +1,24 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct Dinic{
+template<class flow_t> struct Dinic{
     struct Edge{
-        int next, dual, spare;
+        int next, dual;
+        flow_t spare;
     };
-    const int INF = 1e9;
-    int n, S, T;
+    const flow_t INF = 1e9;
+    int n;
     vector<int> level, work;
     vector<vector<Edge>> adj;
 
     Dinic(int _n): n(_n), adj(n+1) {}
     
-    void setS(int _S) {S = _S;}
-    void setT(int _T) {T = _T;}
-
-    void addEdge(int u, int v, int w, bool directed = 1){
-        Edge e1 = {v, adj[v].size(), w}, e2 = {u, adj[u].size(), (directed ? 0 : w)};
-        adj[u].push_back(e1);
-        adj[v].push_back(e2);
+    void addEdge(int u, int v, flow_t w, flow_t recap){
+        adj[u].push_back({v, (int)adj[v].size(), cap});
+        adj[v].push_back({u, (int)adj[u].size() - 1, recap});
     }
 
-    bool bfs(){
+    bool bfs(int S, int T){
         level = vector<int>(n+1, -1);
         level[S] = 0;
         queue<int> que;
@@ -39,12 +36,12 @@ struct Dinic{
         return level[T] != -1;
     }
 
-    int dfs(int cur, int flow){
+    flow_t dfs(int cur, int T, int flow){
         if(cur == T) return flow;
         for(int &i=work[cur]; i<adj[cur].size(); i++){
             auto &[next, dual, spare] = adj[cur][i];
             if(level[next] == level[cur] + 1 && spare > 0){
-                int df = dfs(next, min(spare, flow));
+                flow_t df = dfs(next, min(spare, flow));
                 if(df > 0){
                     spare -= df;
                     adj[next][dual].spare += df;
@@ -55,12 +52,12 @@ struct Dinic{
         return 0;
     }
 
-    int get_maxflow(){
-        int total = 0;
-        while(bfs()){
-            work = vector<int>(n+1);
+    flow_t get_maxflow(int S, int T){
+        flow_t total = 0;
+        while(bfs(S, T)){
+            work = vector<int>(n+1, 0);
             while(1){
-                int flow = dfs(S, INF);
+                flow_t flow = dfs(S, T, INF);
                 if(flow == 0) break;
                 total += flow;
             }
@@ -68,11 +65,11 @@ struct Dinic{
         return total;
     }
 
-    int getflow(int v, int e){
+    flow_t getflow(int v, int e){
         return adj[v][e].spare;
     }
 
     bool cutSide(int v){
         return level[v] != -1;
     }
-}nf;
+};
