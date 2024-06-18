@@ -6,14 +6,14 @@ template<class flow_t> struct Dinic{
         int next, dual;
         flow_t spare;
     };
-    const flow_t INF = 1e9;
+    const flow_t INF = numeric_limits<flow_t>::max() / 2;
     int n;
     vector<int> level, work;
     vector<vector<Edge>> adj;
 
     Dinic(int _n): n(_n), adj(_n) {}
     
-    void addEdge(int u, int v, flow_t w, flow_t recap){
+    void addEdge(int u, int v, flow_t w, flow_t recap = 0){
         adj[u].push_back({v, (int)adj[v].size(), cap});
         adj[v].push_back({u, (int)adj[u].size() - 1, recap});
     }
