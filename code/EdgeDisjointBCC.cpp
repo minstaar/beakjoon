@@ -5,9 +5,7 @@ typedef pair<int, int> pii;
 struct UnionFind{
     vector<int> parent;
 
-    void init(int n){
-        parent = vector<int>(n+1, -1);
-    }
+    UnionFind(int n): parent(n+1) {}
 
     int Find(int x){
         return parent[x] < 0 ? x : parent[x] = Find(parent[x]);
@@ -30,12 +28,7 @@ struct BCC{
     UnionFind UF;
     int n, id;
 
-    void init(int _n){
-        n = _n;
-        id = 0;
-        adj = vector<vector<pii>>(n+1);
-        UF.init(n);
-    }
+    BCC(int _n): n(_n), id(0), adj(_n+1), UF(_n) {}
 
     void addEdge(int u, int v, int idx){
         adj[u].push_back({v, idx});
@@ -70,4 +63,4 @@ struct BCC{
             bcc[v].push_back(u);
         }
     }
-}bcc;
+};

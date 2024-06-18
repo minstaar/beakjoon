@@ -7,9 +7,7 @@ struct strongly_connected{
     int pv, scc_cnt;
     stack<int> st;
     
-    void init(int n){
-        adj = vector<vector<int>>(n+1);
-    }
+    strongly_connected(int n): adj(n+1) {}
     
     void addEdge(int u, int v){
         adj[u].push_back(v);
@@ -49,4 +47,4 @@ struct strongly_connected{
             }
         }
     }
-}scc;
+};

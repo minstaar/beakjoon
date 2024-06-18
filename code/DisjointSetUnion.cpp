@@ -4,9 +4,7 @@ using namespace std;
 struct UnionFind{
     vector<int> parent;
 
-    void init(int n){
-        parent = vector<int>(n+1, -1);
-    }
+    UnionFind(int n): parent(n+1) {}
 
     int Find(int x){
         return parent[x] < 0 ? x : parent[x] = Find(parent[x]);
@@ -19,4 +17,4 @@ struct UnionFind{
         parent[y] = x;
         return true;
     }
-}UF;
+};

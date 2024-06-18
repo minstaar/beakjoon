@@ -10,10 +10,7 @@ struct BCC{
     vector<vector<int>> bcc;
     int n, id, art_point, color_cnt;
 
-    void init(int _n){
-        n = _n;
-        adj = vector<vector<pii>>(n+1);
-    }
+    BCC(int _n): n(_n), adj(_n+1) {}
 
     void addEdge(int u, int v, int idx){
         adj[u].push_back({v, idx});
@@ -64,4 +61,4 @@ struct BCC{
             if(!visited[i]) color(i, 0);
         }
     }
-}bcc;
+};

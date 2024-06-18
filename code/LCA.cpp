@@ -17,15 +17,12 @@ struct LCA{
     vector<vector<Data>> dist;
     int n, log;
 
-    void init(int _n){
-        n = _n;
-        adj = vector<vector<pii>>(n+1);
-        for(; (1<<log)<=n; log++);
-        log++;
-        parent = vector<vector<int>>(n+1, vector<int>(log, -1));
-        dist = vector<vector<Data>>(n+1, vector<Data>(log));
-        depth = vector<int>(n+1, -1);
-    }
+    LCA(int _n): n(_n), adj(n+1), depth(n+1, -1),
+                parent(n+1, vector<int>(log, -1)), 
+                dist(n+1, vector<Data>(log)) {
+                    for(; (1<<log)<=n; log++);
+                    log++;
+                }
 
     void addEdge(int u, int v, int c){
         adj[u].push_back({v, c});
@@ -102,4 +99,4 @@ struct LCA{
         }
         return res;
     }
-}lca;
+};

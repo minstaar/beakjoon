@@ -7,9 +7,7 @@ struct strongly_connected{
     int pv, scc_cnt;
     stack<int> st;
     
-    void init(int n){
-        adj = vector<vector<int>>(n+1);
-    }
+    strongly_connected(int _n): adj(_n+1) {}
     
     void addEdge(int u, int v){
         adj[u].push_back(v);
@@ -52,17 +50,14 @@ struct strongly_connected{
             }
         }
     }
-}scc;
+};
 
 struct TwoSat{
     strongly_connected scc;
     int n;
     vector<int> res;
 
-    void init(int _n){
-        n = _n;
-        scc.init(n*2+1);
-    }
+    TwoSat(int _n): n(_n), scc(_n*2+1) {}
     
     int Not(int x) {return x > n ? x - n : x + n;}
 
@@ -86,7 +81,7 @@ struct TwoSat{
         }
         return true;
     }
-}twosat;
+};
 
 struct TwoQbf{
     int n;

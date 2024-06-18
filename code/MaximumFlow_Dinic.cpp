@@ -11,7 +11,7 @@ template<class flow_t> struct Dinic{
     vector<int> level, work;
     vector<vector<Edge>> adj;
 
-    Dinic(int _n): n(_n), adj(n+1) {}
+    Dinic(int _n): n(_n), adj(_n) {}
     
     void addEdge(int u, int v, flow_t w, flow_t recap){
         adj[u].push_back({v, (int)adj[v].size(), cap});
