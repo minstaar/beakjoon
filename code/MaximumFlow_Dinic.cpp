@@ -36,12 +36,12 @@ template<class flow_t> struct Dinic{
         return level[T] != -1;
     }
 
-    flow_t dfs(int cur, int T, int flow){
+    flow_t dfs(int cur, int T, flow_t flow){
         if(cur == T) return flow;
         for(int &i=work[cur]; i<adj[cur].size(); i++){
             auto &[next, dual, spare] = adj[cur][i];
             if(level[next] == level[cur] + 1 && spare > 0){
-                flow_t df = dfs(next, min(spare, flow));
+                flow_t df = dfs(next, T, min(spare, flow));
                 if(df > 0){
                     spare -= df;
                     adj[next][dual].spare += df;
