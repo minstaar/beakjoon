@@ -119,7 +119,7 @@ struct LCA{
         if(res.size() == 1) return {*res.begin(), *res.begin()};
         else return {*res.begin(), *next(res.begin())};
     }
-}lca;
+};
 
 int main()
 {
@@ -127,6 +127,7 @@ int main()
 
     int V, E; cin >> V >> E;
     vector<Edge> edges(E);
+    LCA lca;
     lca.init(V);
     for(int i=0; i<E; i++){
         int u, v, c; cin >> u >> v >> c;
