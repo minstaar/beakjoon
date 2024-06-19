@@ -1,11 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+typedef pair<int, int> pii;
 template<class flow_t> struct Dinic{
     const flow_t INF = numeric_limits<flow_t>::max() / 2;
     int n;
     vector<int> level, work;
     vector<vector<flow_t>> adj;
+    vector<pii> edges;
     vector<vector<flow_t>> c, f;
 
     Dinic(int _n): n(_n), adj(_n), c(_n, vector<int>(_n)), f(_n, vector<int>(_n)) {}
@@ -15,6 +17,7 @@ template<class flow_t> struct Dinic{
         adj[v].push_back(u);
         c[u][v] += w;
         c[v][u] += recap;
+        edges.push_back({u, v});
     }
 
     bool bfs(int S, int T){
@@ -81,36 +84,22 @@ int main()
         nf.get_maxflow(S, T);
 
         int res = 0;
-        queue<int> que;
-        vector<int> level(N, -1);
-        que.push(S);
-        level[S] = 0;
-        while(!que.empty()){
-            int u = que.front();
-            que.pop();
-            for(auto v: nf.adj[u]){
-                if(nf.c[u][v] == nf.f[u][v]){
-                    queue<int> que2;
-                    vector<int> prev(N, -1);
-                    que2.push(u);
-                    while(!que2.empty()){
-                        int cur = que2.front();
-                        que2.pop();
-                        if(prev[v] != -1) break;
-                        for(auto next: nf.adj[cur]){
-                            if(prev[next] == -1 && nf.c[cur][next] - nf.f[cur][next] > 0){
-                                que2.push(next);
-                                prev[next] = cur;
-                            }
-                        }
+        for(auto [u, v]: nf.edges){
+            queue<int> que;
+            vector<int> prev(N, -1);
+            que.push(u);
+            while(!que.empty()){
+                int cur = que.front();
+                que.pop();
+                if(prev[v] != -1) break;
+                for(auto next: nf.adj[cur]){
+                    if(prev[next] == -1 && nf.c[cur][next] - nf.f[cur][next] > 0){
+                        que.push(next);
+                        prev[next] = cur;
                     }
-                    if(prev[v] != -1) res++;
-                }
-                if(level[v] == -1){
-                    level[v] = level[u] + 1;
-                    que.push(v);
                 }
             }
+            if(prev[v] == -1) res++;
         }
         cout << res << '\n';
     }
