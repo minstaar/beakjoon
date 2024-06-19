@@ -3,13 +3,11 @@ using namespace std;
 
 typedef long long ll;
 typedef pair<int, int> pii;
-const int INF = 1e9;
+
 struct UnionFind{
     vector<int> parent;
 
-    void init(int n){
-        parent = vector<int>(n+1, -1);
-    }
+    UnionFind(int n): parent(n+1, -1){}
 
     int Find(int x){
         return parent[x] < 0 ? x : parent[x] = Find(parent[x]);
@@ -24,7 +22,7 @@ struct UnionFind{
         }
         return false;
     }
-}UF;
+};
 
 struct Edge{
     int from, to, cost;
@@ -42,14 +40,13 @@ struct LCA{
 
     void init(int _n){
         n = _n;
-        adj.clear();
-        adj.resize(n+1);
         for(; (1<<log)<=n; log++);
-        log++;
-        parent.resize(n+1, vector<int>(log, -1));
-        dist.resize(n+1, vector<int>(log, -1));
-        dist2.resize(n+1, vector<int>(log, -1));
+        log++;        
+        adj = vector<vector<pii>>(n+1);
         depth = vector<int>(n+1, -1);
+        parent = vector<vector<int>>(n+1, vector<int>(log, -1));
+        dist = vector<vector<int>>(n+1, vector<int>(log));
+        dist2 = vector<vector<int>>(n+1, vector<int>(log));
     }
 
     void addEdge(int u, int v, int c){
@@ -73,11 +70,12 @@ struct LCA{
         depth[1] = 0;
         dfs(1);
         for(int i=0; i<=log-2; i++){
-            set<int, greater<int>> tmp;
             for(int j=2; j<=n; j++){
                 if(parent[j][i] != -1){
                     parent[j][i+1] = parent[parent[j][i]][i];
+                    if(parent[j][i+1] == -1) continue;
                     dist[j][i+1] = max(dist[parent[j][i]][i], dist[j][i]);
+                    set<int, greater<int>> tmp;
                     tmp.insert(dist[parent[j][i]][i]);
                     tmp.insert(dist[j][i]);
                     tmp.insert(dist2[parent[j][i]][i]);
@@ -138,7 +136,7 @@ int main()
     
     ll mst = 0, ans = LLONG_MAX;
     vector<Edge> exclude;
-    UF.init(V);
+    UnionFind UF(V);
     for(auto [u, v, c]: edges){
         if(UF.Union(u, v)){
             lca.addEdge(u, v, c);
@@ -147,15 +145,15 @@ int main()
         else exclude.push_back({u, v, c});
     }
 
-    if(E - exclude.size() != V - 1){
+    if(E - exclude.size() != V - 1 || V == 1){
         cout << -1 << '\n';
     }
     else{
         lca.setParent();
         for(auto [u, v, c]: exclude){
             pii res = lca.get_lca(u, v);
-            if(res.first != -1 && c - res.first > 0) ans = min(ans, mst + c - res.first);
-            else if(res.second != -1 && c - res.second > 0) ans = min(ans, mst + c - res.second);
+            if(c - res.first > 0) ans = min(ans, mst + c - res.first);
+            else if(c - res.second > 0) ans = min(ans, mst + c - res.second);
         }
     
         if(ans == LLONG_MAX || ans <= mst) cout << -1 << '\n';
