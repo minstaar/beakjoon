@@ -22,8 +22,8 @@ struct LCA{
         for(; (1<<log)<=n; log++);
         log++;        
         adj = vector<vector<pii>>(n+1);
-        depth = vector<int>(n+1, -1);
-        parent = vector<vector<int>>(n+1, vector<int>(log, -1));
+        depth = vector<int>(n+1);
+        parent = vector<vector<int>>(n+1, vector<int>(log));
         dist = vector<vector<Data>>(n+1, vector<Data>(log));
     }
 
@@ -32,42 +32,39 @@ struct LCA{
         adj[v].push_back({u, c});
     }
 
-    void dfs(int cur){
-        for(auto [next, cost]: adj[cur]){
-            if(depth[next] == -1){
-                depth[next] = depth[cur] + 1;
-                parent[next][0] = cur;
-                dist[next][0] = {cost, cost, cost};
-                dfs(next);
+    void build(){
+        queue<int> que;
+        que.push(1);
+        depth[1] = 1;
+        while(!que.empty()){
+            int cur = que.front(); que.pop();
+            for(auto [next, cost]: adj[cur]){
+                if(!depth[next]){
+                    depth[next] = depth[cur] + 1;
+                    parent[next][0] = cur;
+                    dist[next][0] = {cost, cost, cost};
+                    que.push(next);
+                }
             }
         }
-    }
-
-    void setParent(){
-        depth[1] = 0;
-        dfs(1);
-        for(int i=0; i<=log-2; i++){
-            for(int j=2; j<=n; j++){
-                if(parent[j][i] != -1){
-                    parent[j][i+1] = parent[parent[j][i]][i];
-                    dist[j][i+1].min = min(dist[parent[j][i]][i].min, dist[j][i].min);
-                    dist[j][i+1].max = max(dist[parent[j][i]][i].max, dist[j][i].max);
-                    dist[j][i+1].sum = dist[parent[j][i]][i].sum + dist[j][i].sum;
-                }
+        for(int i=1; i<log; i++){
+            for(int j=1; j<=n; j++){
+                parent[j][i] = parent[parent[j][i-1]][i-1];
+                dist[j][i].min = min(dist[parent[j][i-1]][i-1].min, dist[j][i-1].min);
+                dist[j][i].max = max(dist[parent[j][i-1]][i-1].max, dist[j][i-1].max);
+                dist[j][i].sum = dist[parent[j][i-1]][i-1].sum + dist[j][i-1].sum;
             }
         }
     }
 
     int get_lca(int u, int v){
         if(depth[u] < depth[v]) swap(u, v);
-        int diff = depth[u] - depth[v];
-        for(int i=0; diff; i++){
-            if(diff % 2) u = parent[u][i];
-            diff /= 2;
+        for(int i=log-1; i>=0; i--){
+            if(depth[u] - depth[v] >= (1 << i)) u = parent[u][i];
         }
         if(u != v){
             for(int i=log-1; i>=0; i--){
-                if(parent[u][i] != -1 && parent[u][i] != parent[v][i]){
+                if(parent[u][i] != parent[v][i]){
                     u = parent[u][i];
                     v = parent[v][i];
                 }
@@ -80,25 +77,21 @@ struct LCA{
     Data get_dist(int u, int v){
         Data res;
         int a = get_lca(u, v);
-        int diff = depth[u] - depth[a];
-        for(int i=0; diff; i++){
-            if(diff % 2){
+        for(int i=log-1; i>=0; i--){
+            if(depth[u] - depth[a] >= (1 << i)){
                 res.sum += dist[u][i].sum;
                 res.min = min(res.min, dist[u][i].min);
                 res.max = max(res.max, dist[u][i].max);
                 u = parent[u][i];
             }
-            diff /= 2;
         }
-        diff = depth[v] - depth[a];
-        for(int i=0; diff; i++){
-            if(diff % 2){
-                res.sum += dist[u][i].sum;
-                res.min = min(res.min, dist[u][i].min);
-                res.max = max(res.max, dist[u][i].max);
-                u = parent[u][i];
+        for(int i=log-1; i>=0; i--){
+            if(depth[v] - depth[a] >= (1 << i)){
+                res.sum += dist[v][i].sum;
+                res.min = min(res.min, dist[v][i].min);
+                res.max = max(res.max, dist[v][i].max);
+                v = parent[v][i];
             }
-            diff /= 2;
         }
         return res;
     }
