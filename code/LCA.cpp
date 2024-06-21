@@ -62,16 +62,14 @@ struct LCA{
         for(int i=log-1; i>=0; i--){
             if(depth[u] - depth[v] >= (1 << i)) u = parent[u][i];
         }
-        if(u != v){
-            for(int i=log-1; i>=0; i--){
-                if(parent[u][i] != parent[v][i]){
-                    u = parent[u][i];
-                    v = parent[v][i];
-                }
+        if(u == v) return u;
+        for(int i=log-1; i>=0; i--){
+            if(parent[u][i] ^ parent[v][i]){
+                u = parent[u][i];
+                v = parent[v][i];
             }
-            u = parent[u][0];
         }
-        return u;
+        return parent[u][0];
     }
 
     Data get_dist(int u, int v){
