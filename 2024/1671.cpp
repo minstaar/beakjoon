@@ -52,7 +52,7 @@ int main()
         for(int j=0; j<N; j++){
             int t = chk(arr[i], arr[j]);
             if(t == 1 || t == 2 && i < j){
-                adj[i].push_back(j + N);
+                adj[i].push_back(j);
             }
         }
     }
@@ -67,7 +67,7 @@ int main()
     }
     int res = 0;
     for(int i=0; i<N; i++){
-        res += r[i+N] == -1;
+        res += r[i] == -1;
     }
     cout << res << '\n';
 
