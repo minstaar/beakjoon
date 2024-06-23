@@ -113,7 +113,7 @@ int main()
     depth[0] = 1;
     dfs(0);
     for(int i=1; i<19; i++){
-        for(int j=1; j<=N; j++){
+        for(int j=0; j<N; j++){
             dp[j][i] = dp[dp[j][i-1]][i-1];
         }
     }
