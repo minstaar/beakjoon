@@ -82,7 +82,7 @@ struct MCMF{
         return 0;
     }
     
-    pair<cost_t, flow_t> mincostflow(int S, int T){ //{cost, flow}
+    pair<cost_t, flow_t> get_MCMF(int S, int T){ //{cost, flow}
         init(S, T);
         cost_t cost = 0;
         flow_t flow = 0;
