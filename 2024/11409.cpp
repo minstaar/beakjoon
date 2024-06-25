@@ -98,3 +98,29 @@ struct MCMF{
         return {cost, flow};
     }
 };
+
+int main()
+{
+    ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+
+    int N, M; cin >> N >> M;
+    int S = 0, T = N + M + 1;
+    MCMF<int, int, 810> mcmf;
+    for(int i=1; i<=N; i++){
+        mcmf.addEdge(S, i, 1, 0);
+    }
+    for(int i=1; i<=M; i++){
+        mcmf.addEdge(i + N, T, 1, 0);
+    }
+    for(int i=1; i<=N; i++){
+        int k; cin >> k;
+        for(int j=0; j<k; j++){
+            int v, w; cin >> v >> w;
+            mcmf.addEdge(i, v + N, 1, -w);
+        }
+    }
+    auto [cost, flow] = mcmf.get_MCMF(S, T);
+    cout << flow << '\n' << -cost << '\n';
+
+    return 0;
+}
