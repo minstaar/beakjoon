@@ -4,7 +4,7 @@ using namespace std;
 struct UnionFind{
     vector<int> parent;
 
-    UnionFind(int n): parent(n+1, -1) {}
+    UnionFind(int n): parent(n, -1) {}
 
     int Find(int x){
         return parent[x] < 0 ? x : parent[x] = Find(parent[x]);
