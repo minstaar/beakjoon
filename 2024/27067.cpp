@@ -36,14 +36,14 @@ int main()
 
     queue<int> que;
     for(int i=0; i<N; i++){
-        if(inDegree[arr[0][i]] == 0) que.push(arr[0][i]);
+        if(!inDegree[arr[0][i]]) que.push(arr[0][i]);
     }
     while(!que.empty()){
         int cur = que.front(); que.pop();
         cout << cur << ' ';
         for(auto next: adj[cur]){
             inDegree[next]--;
-            if(inDegree[next] == 0) que.push(next);
+            if(!inDegree[next]) que.push(next);
         }
     }
 
