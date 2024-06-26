@@ -1,16 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct SegmentTree{
+template<typename node_t> struct SegmentTree{
     int sz;
-    vector<int> tree;
+    vector<node_t> tree;
     
     void init(int n){
         for(sz=1; sz<n; sz<<=1);
-        tree = vector<int>(sz<<1);
+        tree = vector<node_t>(sz<<1);
     }
 
-    void add(int x, int val){
+    void add(int x, node_t val){
         --x |= sz;
         tree[x] = val;
     }
@@ -21,7 +21,7 @@ struct SegmentTree{
         }
     }
 
-    void update(int i, int val){
+    void update(int i, node_t val){
         --i |= sz;
         tree[i] = val;
         while(i >>= 1){
@@ -34,7 +34,7 @@ struct SegmentTree{
         return tree[x];
     }
 
-    int query(int l, int r){
+    node_t query(int l, int r){
         --l |= sz, --r |= sz;
         int res1 = 0, res2 = 0;
         while(l <= r){
