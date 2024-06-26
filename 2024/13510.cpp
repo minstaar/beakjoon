@@ -29,19 +29,14 @@ struct SegmentTree{
         }
     }
 
-    int query(int x){
-        --x |= sz;
-        return tree[x];
-    }
-
     int query(int l, int r){
         --l |= sz, --r |= sz;
         int res1 = 0, res2 = 0;
         while(l <= r){
-            if(l & 1) res1 += tree[l++];
-            if(~r & 1) res2 += tree[r--];
+            if(l & 1) res1 = tree[l++];
+            if(~r & 1) res2 = tree[r--];
             l >>= 1, r >>= 1;
         }
-        return res1 + res2;
+        return max(res1, res2);
     }
 };
