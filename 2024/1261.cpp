@@ -13,7 +13,7 @@ int main()
     int N, M; cin >> M >> N;
     vector<string> arr(N);
     for(int i=0; i<N; i++) cin >> arr[i];
-
+    
     vector<vector<int>> dist(N, vector<int>(M, INF));
     deque<pii> dq;
     dq.push_back({0, 0});
