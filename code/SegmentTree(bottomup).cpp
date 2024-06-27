@@ -29,7 +29,7 @@ template<typename node_t> struct SegmentTree{
         }
     }
 
-    int query(int x){
+    node_t get(int x){
         --x |= sz;
         return tree[x];
     }

@@ -10,7 +10,7 @@ template<typename node_t> struct SegmentTree{
         tree = vector<node_t>(1<<((int)ceil(log2(n))+1));
     }
 
-    node_t Merge(int l, int r){
+    node_t Merge(node_t l, node_t r){
         return l + r;
     }
 
