@@ -117,11 +117,7 @@ int query(int a, int b)
     }
     if(a == b) return ret;
 	if(depth[a] > depth[b]) swap(a, b);
-	int next = -1;
-	for(auto i: adj[a]) {
-		if(top[i] == top[a]) next = i;
-	}
-	ret = max(ret, seg.query(in[next], in[b]));
+	ret = max(ret, seg.query(in[adj[a][0]], in[b]));
 	return ret;
 }
 
