@@ -13,7 +13,7 @@ template<class flow_t> struct Dinic{
 
     Dinic(int _n): n(_n), adj(_n) {}
     
-    void addEdge(int u, int v, flow_t w, flow_t recap = 0){
+    void addEdge(int u, int v, flow_t cap, flow_t recap = 0){
         adj[u].push_back({v, (int)adj[v].size(), cap});
         adj[v].push_back({u, (int)adj[u].size() - 1, recap});
     }
