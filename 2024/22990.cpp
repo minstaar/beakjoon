@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
 
 template<typename flow_t, typename cost_t>
 struct MCMF{
@@ -100,3 +101,35 @@ struct MCMF{
         return {cost, flow};
     }
 };
+
+int main()
+{
+    ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+
+    int N, M; cin >> N >> M;
+    int S = 0, T = N * 2 + 1;
+    MCMF<int, ll> mcmf(40010);
+
+    for(int i=1; i<=N; i++){
+        mcmf.addEdge(S, i, 1, 0);
+        mcmf.addEdge(i + N, T, 1, 0);
+    }
+    for(int i=0; i<M; i++){
+        int u, v, w; cin >> u >> v >> w;
+        mcmf.addEdge(u, v + N, 1, w);
+    }
+
+    auto [cost, flow] = mcmf.get_MCMF(S, T);
+    if(flow != N) cout << 0 << '\n';
+    else{
+        cout << 1 << '\n';
+        cout << cost << '\n';
+        for(int i=1; i<=N; i++){
+            for(auto next: mcmf.adj[i]){
+                if(next.c == 0) cout << i << ' ' << next.v - N << '\n';
+            }
+        }
+    }
+
+    return 0;
+}
