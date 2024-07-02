@@ -6,11 +6,10 @@ struct BCC{
     vector<vector<pii>> adj;
     vector<int> dfn, low, check;
     vector<bool> visited;
-    vector<tuple<int, int, int>> edge;
     vector<vector<int>> bcc;
     int n, id, art_point, color_cnt;
 
-    BCC(int _n): n(_n), adj(_n+1) {}
+    BCC(int n): n(n), adj(n+1) {}
 
     void addEdge(int u, int v, int idx){
         adj[u].push_back({v, idx});
@@ -31,7 +30,7 @@ struct BCC{
             }
             else ret = min(ret, dfn[next]);
         }
-        if(isRoot) check[cur] = (child >= 2 ? ++art_point : 0);
+        if(isRoot && child >= 2) check[cur] = ++art_point;
         return ret;
     }
 
@@ -39,6 +38,7 @@ struct BCC{
         if(p) bcc[cur].push_back(p);
         visited[cur] = true;
         for(auto [next, idx]: adj[cur]){
+            if(visited[next]) continue;
             if(low[next] >= dfn[cur]) {
                 bcc[cur].push_back(++color_cnt);
                 color(next, color_cnt);
@@ -54,7 +54,7 @@ struct BCC{
         visited = vector<bool>(n+1);
         id = art_point = color_cnt = 0;
         for(int i=1; i<=n; i++){
-            if(!dfn[i]) dfs(-1, i);
+            if(!dfn[i]) dfs(i, true);
         }
         bcc = vector<vector<int>>(n+1);
         for(int i=1; i<=n; i++){

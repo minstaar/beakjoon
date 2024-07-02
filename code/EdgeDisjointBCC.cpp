@@ -28,7 +28,7 @@ struct BCC{
     UnionFind UF;
     int n, id;
 
-    BCC(int _n): n(_n), id(0), adj(_n+1), UF(_n) {}
+    BCC(int n): n(n), id(0), adj(n+1), UF(n) {}
 
     void addEdge(int u, int v, int idx){
         adj[u].push_back({v, idx});
