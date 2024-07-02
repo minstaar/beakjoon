@@ -9,7 +9,7 @@ int main()
     int N, K; cin >> N >> K;
     queue<int> que;
     for(int i=1; i<=N; i++) que.push(i);
-    while(que.size() >a 1){
+    while(que.size() > 1){
         int t = que.front();
         for(int i=0; i<K; i++){
             if(!que.empty()) que.pop();
