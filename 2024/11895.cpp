@@ -15,7 +15,7 @@ int main()
         tmp = min(tmp, x);
     }
     
-    if(!check) cout << sum - tmp << '\n';
+    if(check == 0) cout << sum - tmp << '\n';
     else cout << 0 << '\n';
 
     return 0;
