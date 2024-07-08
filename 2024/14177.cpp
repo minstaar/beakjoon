@@ -46,7 +46,7 @@ int main()
         dp[1][i] = cost[1][i];
     }
     for(int i=2; i<=K; i++){
-        solve(i, i, N, i, N);
+        solve(i, 1, N, 1, N);
     }
     cout << dp[K][N] << '\n';
 
