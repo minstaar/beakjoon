@@ -34,7 +34,7 @@ struct CHT{
 	}
 
     pair<ll, int> query(ll x){
-		// if min query, then v[pv].f(x) >= v[pv+1].f(x)
+		// if min query, then lines[pv].f(x) >= lines[pv+1].f(x)
 		while(pv + 1 < lines.size() && lines[pv].f(x) <= lines[pv+1].f(x)) pv++;
 		return {lines[pv].f(x), lines[pv].idx};
 	}
