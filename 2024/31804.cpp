@@ -17,8 +17,7 @@ int main()
         int cur = que.front().first;
         int cnt = que.front().second.first;
         int chance = que.front().second.second;
-        que.pop();
-        
+        que.pop();   
         if(cur + 1 <= b && !check[chance][cur+1]){
             check[chance][cur+1] = true;
             if(cur + 1 == b){
