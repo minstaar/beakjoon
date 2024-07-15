@@ -6,7 +6,6 @@ int val[200010];
 pii childVal[200010], childIdx[200010];
 vector<pii> depth[200010];
 
-
 int main()
 {
     ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
