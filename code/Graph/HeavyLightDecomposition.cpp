@@ -98,7 +98,7 @@ template<typename T> struct HLD{
     }
 
     T query(int a, int b){
-        int ret = 0;
+        T ret = 0;
         while(top[a] ^ top[b]){
             if(depth[top[a]] < depth[top[b]]) swap(a, b);
             int st = top[a];
