@@ -44,8 +44,7 @@ int main()
     for(int i=0; i<3; i++) cin >> x[i];
     for(int i=0; i<3; i++) cin >> y[i];
 
-    ll res = 1e18;
-    
+    ll res = 1e18; 
     for(ll i=-y[0]; i<=y[0]; i++){
         for(ll j=-y[1]; j<=y[1]; j++){
             ll d1 = (x[0] + i) % m[0]; if(d1 < 0) d1 += m[0];
