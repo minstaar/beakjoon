@@ -27,6 +27,7 @@ int solve(int a, int b)
 void trace(int a, int b)
 {
     if(a == W || b == W) return;
+    
     int next = max(a, b) + 1;
     int distA, distB;
     if(a == 0) distA = abs(arr[next][0] - 1) + abs(arr[next][1] - 1);
