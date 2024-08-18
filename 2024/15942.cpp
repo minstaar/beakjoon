@@ -1,26 +1,23 @@
 #include <iostream>
 #include <vector>
+#include <stack>
+#include <queue>
 #include <algorithm>
 using namespace std;
 
 int N, K, P;
-int heap[200010], downVal;
-bool flag = true;
+int heap[200010], upVal, downVal;
+bool flag;
 
 void dfs(int idx)
 {
     heap[idx] = downVal++;
-    if(downVal > N){
+    if(downVal > N + 1){
         flag = true;
         return;
     }
     if((idx << 1) <= N) dfs(idx << 1);
     if((idx << 1 | 1) <= N) dfs(idx << 1 | 1);
-}
-
-void insert(int idx)
-{
-    
 }
 
 int main()
@@ -29,11 +26,15 @@ int main()
 
     cin >> N >> K >> P;
 
+    upVal = 1, downVal = K;
     dfs(P);
-    int idx = P, upVal = K - 1;
-    while(idx >>= 1){
-        heap[idx] = upVal--;
-        if(upVal == 0){
+    int idx = P;
+    stack<int> st;
+    while(idx >>= 1) st.push(idx);
+    while(!st.empty()){
+        heap[st.top()] = upVal++;
+        st.pop();
+        if(upVal > K){
             flag = true;
             break;
         }
@@ -41,10 +42,17 @@ int main()
 
     if(flag) cout << -1 << '\n';
     else{
+        queue<int> que;
+        for(int i=upVal; i<K; i++) que.push(i);
+        for(int i=downVal; i<=N; i++) que.push(i);
         for(int i=1; i<=N; i++){
-            if(heap[i]) continue;
-            insert(i);
+            if(heap[i]) cout << heap[i] << ' ';
+            else{
+                cout << que.front() << ' ';
+                que.pop();
+            }
         }
+
     }
 
     return 0;
