@@ -15,8 +15,8 @@ struct Query
     }
 };
 
-int arr[100010], cnt[1000010], ans[1000010];
-vector<Query> query(1000010);
+int arr[100010], cnt[1000010], ans[100010];
+vector<Query> query(100010);
 
 int main()
 {
