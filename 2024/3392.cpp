@@ -3,7 +3,7 @@
 #include <algorithm>
 using namespace std;
 
-const int MAX = 30010;
+const int MAX = 300010;
 
 struct Node
 {
