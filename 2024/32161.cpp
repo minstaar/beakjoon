@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include <queue>
+#include <cstring>
 using namespace std;
 
 struct UnionFind
@@ -63,11 +64,20 @@ int main()
     int x = UF.Find(0);
     if(-UF.parent[x] == N){
         for(int i=0; i<pv; i++){
-            for(int j=0; j<pv; j++){
-                if(i != j && !dist[i][j]) dist[i][j] = INF;
+            memset(dist[i], -1, sizeof(dist[i]));
+            queue<pair<int, int>> que;
+            que.push({i, 0});
+            dist[i][i] = 0;
+            while(!que.empty()){
+                auto[cur, cost] = que.front();
+                que.pop();
+                for(auto next: adj[cur]){
+                    if(dist[i][next] != -1) continue;
+                    dist[i][next] = cost + 1;
+                    que.push({next, cost + 1});
+                }
             }
         }
-        floyd();
         while(Q--){
             int s, e; cin >> s >> e;
             cout << dist[mp[s]][mp[e]] << '\n';
