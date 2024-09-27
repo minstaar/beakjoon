@@ -1,10 +1,12 @@
 #include <iostream>
 #include <queue>
 #include <set>
+#include <cmath>
 using namespace std;
 using ll = long long;
 
 int N;
+const ll mx = pow(2LL, 60);
 set<ll> s;
 
 int main()
@@ -22,23 +24,23 @@ int main()
     }
 
     queue<ll> que;
-    que.push(1LL);
+    que.push(1);
     int cnt = 1;
     while(!que.empty()){
         ll cur = que.front();
         que.pop();
-        if(s.find(cur<<1LL) == s.end()){
-            que.push(cur<<1LL);
+        if(s.find(cur * 2) == s.end()){
+            que.push(cur * 2);
             cnt++;
-            if(cnt >= N){
+            if(cur * 2 >= mx || cnt >= N){
                 cout << "-1\n";
                 return 0;
             }
         }
-        if(s.find(cur<<1LL|1LL) == s.end()){
-            que.push(cur<<1LL|1LL);
+        if(s.find(cur * 2 + 1) == s.end()){
+            que.push(cur * 2 + 1);
             cnt++;
-            if(cnt >= N){
+            if(cur * 2 >= mx || cnt >= N){
                 cout << "-1\n";
                 return 0;
             }
