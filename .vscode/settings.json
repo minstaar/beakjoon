@@ -18,6 +18,8 @@
         "ranges": "cpp",
         "span": "cpp",
         "regex": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "cmath": "cpp",
+        "complex": "cpp"
     }
 }
