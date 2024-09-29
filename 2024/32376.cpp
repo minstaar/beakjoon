@@ -21,10 +21,6 @@ int main()
     for(int i=0; i<N; i++){
         int cnt = upper_bound(arr.begin(), arr.end(), arr[i] + K) - arr.begin() - i;
         mx = max(mx, cnt);
-        cnt = i - (lower_bound(arr.begin(), arr.end(), arr[i] - K) - arr.begin()) + 1;
-        mx = max(mx, cnt);
-        cnt = upper_bound(arr.begin(), arr.end(), arr[i] + (double)K / 2) - lower_bound(arr.begin(), arr.end(), arr[i] - (double)K / 2);
-        mx = max(mx, cnt);
     }
 
     double ans = (double)100 / N * mx;
