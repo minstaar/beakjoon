@@ -8,7 +8,7 @@ int main()
 
     ll N, x, y, z; cin >> N >> x >> y >> z;
 
-    auto cnt = [&](ll time) -> ll{
+    auto cnt = [&](ll time){
         return time / x + time / y + time / z;
     };
 
@@ -29,7 +29,7 @@ int main()
         if(l % x == 0 && l % y == 0) cout << "B win\n";
         else cout << "C win\n";
     }
-    else cout << "C win\n";Q
+    else cout << "C win\n";
 
     return 0;
 }
