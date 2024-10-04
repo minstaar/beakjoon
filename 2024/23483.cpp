@@ -3,10 +3,10 @@ using namespace std;
 
 int main()
 {
-    int ax = -1e9, ay = 1e9 - 1;
-    int bx = 1e9, by = 1e9;
-    int cx = -1e9, cy = -1e9;
-    int dx = 1e9, dy = -1e9 + 2;
+    int ax = -1e9, ay = 0;
+    int bx = 0, by = 1e9 - 1;
+    int cx = 0, cy = -1e9;
+    int dx = 1e9 - 1, dy = -2;
 
     cout << ax << ' ' << ay << '\n';
     cout << bx << ' ' << by << '\n';
