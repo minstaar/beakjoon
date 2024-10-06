@@ -5,18 +5,17 @@
 #include <algorithm>
 #include <iomanip>
 using namespace std;
-using ld = double;
 using pii = pair<int, int>;
 
-ld INF = 1e18;
-vector<ld> dist(2010, INF);
-vector<pair<int, ld>> adj[2010];
+double INF = 1e18;
+vector<double> dist(2010, INF);
+vector<pair<int, double>> adj[2010];
 vector<pii> arr(2010);
 
-ld getDist(pair<ld, ld> a, pair<ld, ld> b)
+double getDist(pair<double, double> a, pair<double, double> b)
 {
-    ld x = abs(a.first - b.first);
-    ld y = abs(a.second - b.second);
+    double x = abs(a.first - b.first);
+    double y = abs(a.second - b.second);
     return sqrt(x * x + y * y);
 }
 
@@ -31,23 +30,23 @@ int main()
     }
     for(int i=1; i<=N; i++){
         for(int j=1; j<i; j++){
-            ld d = getDist(arr[i], arr[j]);
-            d = max((ld)0, d - 2);
+            double d = getDist(arr[i], arr[j]);
+            d = max((double)0, d - 2);
             adj[i].push_back({j, d});
             adj[j].push_back({i, d});
         }
     }
     for(int i=1; i<=N; i++){
-        ld d = getDist({0, 0}, arr[i]);
-        d = max((ld)0, d - 1);
+        double d = getDist({0, 0}, arr[i]);
+        d = max((double)0, d - 1);
         adj[0].push_back({i, d});
         d = getDist(arr[i], {A, B});
-        d = max((ld)0, d - 1);
+        d = max((double)0, d - 1);
         adj[i].push_back({N + 1, d});
     }
     adj[0].push_back({N + 1, getDist({0, 0}, {A, B})});
 
-    priority_queue<pair<ld, int>, vector<pair<ld, int>>> pq;
+    priority_queue<pair<double, int>, vector<pair<double, int>>> pq;
     pq.push({0, 0});
     dist[0] = 0;
     while(!pq.empty()){
