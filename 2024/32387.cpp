@@ -1,12 +1,11 @@
 #include <iostream>
 #include <set>
-#include <map>
 using namespace std;
 using pii = pair<int, int>;
 
 int N, Q;
 set<int> rs;
-map<int, int> m;
+int arr[1000010];
 
 int main()
 {
@@ -19,7 +18,7 @@ int main()
         if(op == 1){
             if(rs.find(val) != rs.end()){
                 rs.erase(val);
-                m[val] = i;
+                arr[val] = i;
                 cout << val << '\n';
             }
             else{
@@ -27,7 +26,7 @@ int main()
                 if(it == rs.end()) cout << "-1\n";
                 else{
                     cout << *it << '\n';
-                    m[*it] = i;
+                    arr[*it] = i;
                     rs.erase(it);
                 }
             }
@@ -37,8 +36,7 @@ int main()
                 cout << "-1\n";
             }
             else{
-                cout << m[val] << '\n';
-                m.erase(val);
+                cout << arr[val] << '\n';
                 rs.insert(val);
             }
         }
