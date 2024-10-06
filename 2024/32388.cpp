@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <iomanip>
 using namespace std;
-using ld = long double;
+using ld = double;
 using pii = pair<int, int>;
 
 ld INF = 1e18;
