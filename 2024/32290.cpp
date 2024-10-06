@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-bool cnt[2010];
+bool cnt[1030];
 
 int main()
 {
@@ -11,7 +11,7 @@ int main()
     for(int i=l; i<=r; i++){
         cnt[i|x] = true;
     }
-    for(int i=0; i<=2000; i++){
+    for(int i=0; i<=1024; i++){
         if(!cnt[i]) {cout << i << '\n'; break;}
     }
 
