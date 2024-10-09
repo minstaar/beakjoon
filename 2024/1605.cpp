@@ -20,13 +20,13 @@ vector<int> constructSA(string &str)
         for(int i=0; i<M; i++) cnt[i] = 0;
         for(int i=0; i<N; i++) cnt[r[i]]++;
         for(int i=1; i<M; i++) cnt[i] += cnt[i-1];
-        for(int i=N-1; i>=0; i--) sa[--cnt[r[i]]] = idx[i];
+        for(int i=N-1; i>=0; i--) sa[--cnt[r[idx[i]]]] = idx[i];
 
-        nr[sa[0]] = 0;
+        nr[sa[0]] = 1;
         for(int i=1; i<N; i++) nr[sa[i]] = nr[sa[i-1]] + cmp(sa[i-1], sa[i]);
         for(int i=0; i<N; i++) r[i] = nr[i];
 
-        if(r[sa[N-1]] == N - 1) break;
+        if(r[sa[N-1]] == N) break;
     }
 
     return sa;
@@ -43,4 +43,18 @@ vector<int> constructLCP(string &str, vector<int> &sa)
         lcp[isa[i]] = k;
     }
     return lcp;
+}
+
+int main()
+{
+    ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+
+    int N; cin >> N;
+    string str; cin >> str;
+
+    auto sa = constructSA(str);
+    auto lcp = constructLCP(str, sa);
+    cout << *max_element(lcp.begin(), lcp.end()) << '\n';
+
+    return 0;
 }
