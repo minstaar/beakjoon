@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#define all(v) v.begin(), v.end()
 using namespace std;
 using ll = long long;
 
