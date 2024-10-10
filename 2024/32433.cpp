@@ -25,6 +25,5 @@ int main()
         cout << res << ' ';
     }
 
-
     return 0;
 }
