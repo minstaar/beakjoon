@@ -66,3 +66,93 @@ struct MaximumFlow{
         return total;
     }
 };
+
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+struct Edge
+{
+    int next, inv, c, f;
+    int spare(){
+        return c - f;
+    }
+};
+
+const int MAX = 1010;
+int N, arr[2][510];
+int S, T;
+vector<Edge> adj[MAX];
+vector<int>
+
+void addEdge(int u, int v, int cap, int recap)
+{
+    adj[u].push_back({v, (int)adj[v].size(), cap, 0});
+    adj[v].push_back({u, (int)adj[u].size() - 1, recap, 0});
+}
+
+int get_maxflow()
+{
+    int total = 0;
+    while(1){
+        vector<int> prev(MAX, -1), path(MAX);
+        queue<int> que;
+        que.push(S);
+        while(!que.empty() && prev[T] == -1){
+            int cur = que.front();
+            que.pop();
+            for(int i=0; i<adj[i].size(); i++){
+                auto [next, inv, c, f] = adj[cur][i];
+                if(c - f > 0 && prev[next] == -1){
+                    prev[next] = cur;
+                    path[next] = i;
+                    que.push(next);
+                    if(next == T) break;
+                }
+            }
+        }
+        if(prev[T] == -1) break;
+        int flow = 1e9;
+        for(int i=T; i!=S; i=prev[i]) flow = min(flow, adj[prev[i]][path[i]].spare());
+        for(int i=T; i!=S; i=prev[i]){
+            auto &[next, inv, c, f] = adj[prev[i]][path[i]];
+            f += flow;
+            adj[next][inv].f -= flow;
+        }
+        total += flow;
+    }
+    return total;
+}
+
+int main()
+{
+    ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+
+    cin >> N;
+    for(int i=0; i<2; i++){
+        for(int j=1; j<=N; j++){
+            cin >> arr[i][j];
+        }
+    }
+
+    S = 0, T = 2 * N + 1;
+    for(int i=1; i<=N; i++){
+        addEdge(S, i, arr[0][i], 0);
+        addEdge(i, T, arr[1][i], 0);
+    }
+    for(int i=1; i<=N; i++){
+        for(int j=1; j<=N; j++){
+            addEdge(i, j + N, 1, 0);
+        }
+    }
+    
+    get_maxflow();
+
+    for(int i=1; i<=N; i++){
+        for(int j=1; j<=N; j++){
+            if(adj[i][])
+        }
+    }
+}
