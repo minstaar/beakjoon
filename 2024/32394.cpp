@@ -20,6 +20,7 @@ int main()
     for(int i=1; i<=N; i++){
         vector<int> cnt(N+1);
         for(auto next: adj[i]){
+            if(next <= i) continue;
             for(auto next2: adj[next]){
                 cnt[next2]++;
             }
@@ -30,7 +31,7 @@ int main()
         }
     }
 
-    cout << res / 2 << '\n';
+    cout << res << '\n';
 
     return 0;
 }
