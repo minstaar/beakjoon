@@ -20,18 +20,17 @@ int main()
     for(int i=1; i<=N; i++){
         vector<int> cnt(N+1);
         for(auto next: adj[i]){
-            if(next <= i) continue;
             for(auto next2: adj[next]){
                 cnt[next2]++;
             }
         }
         for(int j=1; j<=N; j++){
             if(i >= j) continue;
-            res += cnt[j] * (cnt[j] - 1) / 2;
+            res += cnt[j] * (cnt[j] - 1);
         }
     }
 
-    cout << res << '\n';
+    cout << res / 4 << '\n';
 
     return 0;
 }
