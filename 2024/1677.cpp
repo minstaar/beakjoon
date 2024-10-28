@@ -4,15 +4,14 @@
 #include <algorithm>
 using namespace std;
 
-int path[110][110][110][8][3];
-
+const int INF = 1e9;
 string A, B, C;
 int dp[110][110][110][8];
 
 int solve(int i, int j, int k, int state)
 {
     if(i >= A.size() && j >= B.size() && k >= C.size()) return 0;
-
+    
     int &ret = dp[i][j][k][state];
     if(dp[i][j][k][state] != -1) return ret;
 
@@ -23,33 +22,22 @@ int solve(int i, int j, int k, int state)
         if(i >= A.size() && !t1 || j >= B.size() && !t2 || k >= C.size() && !t3) continue;
 
         int tmp = solve(i + !t1, j + !t2, k + !t3, l);
-        if(tmp == 11){
-            int abs = 1;
-        }
-        if(tmp == -1) continue;
+
+        if(tmp == -INF) continue;
         
         if(t1 + t2 + t3 == 1){
-            if(t1 && B[j] == C[k]) tmp++;
-            else if(t2 && A[i] == C[k]) tmp++;
-            else if(t3 && A[i] == B[j]) tmp++;
+            if(t1 && j < B.size()  && k < C.size() && B[j] == C[k]) tmp++;
+            else if(t2 &&  i < A.size() && k < C.size() && A[i] == C[k]) tmp++;
+            else if(t3 && i < A.size() && j < B.size() && A[i] == B[j]) tmp++;
         }
         else if(t1 + t2 + t3 == 0){
-            if(A[i] == B[j] && B[j] == C[k]){
-                tmp += 3;
-            }
-            else if(A[i] == B[j] || B[j] == C[k] || C[k] == A[i]) tmp++;
-        }
-        if(ret < tmp){
-            path[i][j][k][state][0] = i + !t1;
-            
-            path[i][j][k][state][1] = i + !t2;
-            
-            path[i][j][k][state][2] = i + !t3;
+            if(i < A.size() && j < B.size() && k < C.size() && A[i] == B[j] && B[j] == C[k]) tmp += 3;
         }
         ret = max(ret, tmp);
     }
 
-    return ret;
+    if(ret == -1) return ret = -INF;
+    else return ret;
 }
 
 int main()
@@ -58,7 +46,9 @@ int main()
 
     cin >> A >> B >> C;
     memset(dp, -1, sizeof(dp));
-    cout << solve(0, 0, 0, 0) << '\n';
+    int res = solve(0, 0, 0, 0);
+    if(res == -INF) cout << "-1\n";
+    else cout << res << '\n';
 
     return 0;
 }
