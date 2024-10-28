@@ -4,6 +4,8 @@
 #include <algorithm>
 using namespace std;
 
+int path[110][110][110][8][3];
+
 string A, B, C;
 int dp[110][110][110][8];
 
@@ -36,6 +38,13 @@ int solve(int i, int j, int k, int state)
                 tmp += 3;
             }
             else if(A[i] == B[j] || B[j] == C[k] || C[k] == A[i]) tmp++;
+        }
+        if(ret < tmp){
+            path[i][j][k][state][0] = i + !t1;
+            
+            path[i][j][k][state][1] = i + !t2;
+            
+            path[i][j][k][state][2] = i + !t3;
         }
         ret = max(ret, tmp);
     }
