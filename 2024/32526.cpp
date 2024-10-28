@@ -8,13 +8,13 @@ int main()
     
     int N, K; cin >> N >> K;
     
-    if(K == N - 1){
+    if(K == N - 1){ // N = 9, K = 1: aaaaaaaaa
         cout << "Yes\n";
         for(int i=0; i<N; i++) cout << 'a';
     }
     else if(K == 0){
         if(N == 2) cout << "No\n";
-        else{
+        else{ // N = 9, K = 0: abcdefghi
             cout << "Yes\n";
             char a = 'a';
             for(int i=0; i<N; i++){
@@ -45,6 +45,6 @@ int main()
         }
     }
     else cout << "No\n";
-    
+
     return 0;
 }
