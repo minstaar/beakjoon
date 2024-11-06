@@ -23,5 +23,5 @@ bool isIntersect(pll &A, pll &B, pll &C, pll &D)
         if(C > D) swap(C, D);
         return A <= D && C <= B;
     }
-    return line1_2 < 0 && line2_1 < 0;
+    return line1_2 <= 0 && line2_1 <= 0;
 }
