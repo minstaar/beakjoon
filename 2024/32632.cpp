@@ -12,6 +12,7 @@ int main()
         if(i == K) continue;
         if(__gcd(i, K) <= 2) cnt++;
     }
+    
     cout << cnt << '\n';
 
     return 0;
