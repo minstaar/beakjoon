@@ -8,9 +8,7 @@ int CCW(pll &A, pll &B, pll &C)
     ll op = A.first * B.second + B.first * C.second + C.first * A.second;
     op -= B.first * A.second + C.first * B.second + A.first * C.second;
 
-    if(op > 0) return 1;
-    else if(op == 0) return 0;
-    else return -1;
+    return (op > 0) - (op < 0);
 }
 
 bool isIntersect(pll &A, pll &B, pll &C, pll &D)
