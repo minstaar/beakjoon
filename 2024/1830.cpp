@@ -93,6 +93,7 @@ ll mnUclidean()
         for(auto it=lower; it!=upper; it++){
             if(dist(cur, *it) < mn) mn = dist(cur, *it);
         }
+        s.insert(cur);
     }
     return mn;
 }
