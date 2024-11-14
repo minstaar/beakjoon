@@ -10,7 +10,7 @@ struct Point{
         if(y == o.y) return x < o.x;
         return y < o.y;
     }
-    Point operator -  (const Point &o) const{
+    Point operator - (const Point &o) const{
         return {x - o.x, y - o.y};
     }
 };
@@ -47,15 +47,13 @@ vector<Point> convexHull(vector<Point>& arr)
 ll calipers(vector<Point> & hull)
 {
     ll mx = 0;
-    int j = 0;
-    for(int i=0; i<hull.size(); i++){
-        ll cur;
+    for(int i=0, j=0; i<hull.size(); i++){
         while(j + 1 < hull.size() && CCW({0, 0}, hull[i] - hull[i+1], hull[j] - hull[j+1]) >= 0){
-            cur = dist(hull[i], hull[j]);
+            ll cur = dist(hull[i], hull[j]);
             if(cur > mx) mx = cur;
             j++;
         }
-        cur = dist(hull[i], hull[j]);
+        ll cur = dist(hull[i], hull[j]);
         if(cur > mx) mx = cur;
     }
     return mx;
