@@ -9,6 +9,7 @@ int main()
     int N, M; cin >> N >> M;
     string str; cin >> str;
     for(int i=0; i<N; i++){
+        if(str[i] == '0') continue;
         if('9' - str[i] + 1 <= M){
             M -= '9' - str[i] + 1;
             str[i] = '0';
