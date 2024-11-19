@@ -5,6 +5,20 @@
 using namespace std;
 using ll = long long;
 
+vector<int> manacher(string &s)
+{
+    int N = s.size(), k = -1, r = -1;
+    vector<int> p(N);
+    for(int i=0; i<N; i++){
+        if(i <= r) p[i] = min(r - i, p[2*k-i]);
+        while(i - p[i] - 1 >= 0 && i + p[i] + 1 < N && s[i-p[i]-1] == s[i+p[i]+1]) p[i]++;
+        if(i + p[i] > r){
+            k = i, r = i + p[i];
+        }
+    }
+    return p;
+}
+
 int arr[510][510];
 
 int main()
@@ -13,18 +27,24 @@ int main()
 
     int N, M; cin >> N >> M;
     vector<string> str(N);
-    for(int i=0; i<N; i++) cin >> str[i];
+    for(int i=0; i<N; i++){
+        string t; cin >> t;
+        string s = "$";
+        for(int i=0; i<t.size(); i++){
+            s += t[i];
+            s += '$';
+        }
+        str[i] = s;
+    }
 
     ll res = 0;
     for(int i=0; i<N; i++){
-        for(int j=0; j<M; j++){
-            int l = j, r = j + 1;
-            while(l >= 0 && r < M){
-                if(str[i][l] == str[i][r]) arr[i][j]++;
-                else break;
-                l--, r++;
+        auto p = manacher(str[i]);
+        for(int j=0; j<M*2+1; j++){
+            if(j % 2 == 0){
+                arr[i][j/2] = p[j] / 2;
+                res += arr[i][j/2];
             }
-            res += arr[i][j];
         }
     }
 
