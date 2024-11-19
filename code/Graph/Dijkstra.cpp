@@ -11,8 +11,8 @@ vector<ll> dijkstra(int n, int src){
     dist[src] = 0;
     while(!pq.empty()){
         auto [curCost, cur] = pq.top(); pq.pop();
-        if(dist[cur] != curCost) continue;
-        for(auto [nextCost, next]: adj[cur]){
+        if(curCost > dist[cur]) continue;
+        for(auto [next, nextCost]: adj[cur]){
             if(dist[next] > dist[cur] + nextCost){
                 dist[next] = dist[cur] + nextCost;
                 pq.push({dist[next], next});
