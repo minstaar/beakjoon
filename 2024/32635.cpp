@@ -79,6 +79,5 @@ int main()
     if(res == 1e9) cout << "-1\n";
     else cout << res << '\n';
 
-
     return 0;
 }
