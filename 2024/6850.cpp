@@ -51,14 +51,14 @@ int main()
     for(int i=0; i<N; i++) cin >> arr[i].x >> arr[i].y;
     auto hull = convexHull(arr);
 
-    ll area = 0;
+    double area = 0;
     for(int i=0; i<hull.size(); i++){
         Point A = hull[i], B = hull[(i+1)%hull.size()];
         area += A.x * B.y - B.x * A.y;
     }
     area = abs(area) / 2;
 
-    cout << area / 50 << '\n';
+    cout << (ll)area / 50 << '\n';
 
     return 0;
 }
